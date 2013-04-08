@@ -17,21 +17,11 @@ class RFTreeNode{
 public:
     
         // new constructor
-    RFTreeNode(vector< vector<int> >& baseDataSet,
+    RFTreeNode(const vector< vector<int> >& baseDataSet,
                vector<int> bootstrappedTrainingSampleIndices,
                vector<int> globalDiscardedFeatureIndices,
                int numFeatures,
-               int numSamples,
-               int numOutputClasses,
-               int generation,
-               int nodeId,
-               float featureStandardDeviationThreshold = 0.0);
-
-    
-    RFTreeNode(vector< vector<int> > bootstrappedTrainingSamples,
-               vector<int> globalDiscardedFeatureIndices,
-               int numFeatures,
-               int numSamples,
+               int numLocalSamples,
                int numOutputClasses,
                int generation,
                int nodeId,
@@ -57,7 +47,7 @@ public:
     RFTreeNode* getLeftChildNode() { return leftChildNode; }
     RFTreeNode* getRightChildNode() { return rightChildNode; }
     const int getOutputClass() { return outputClass; }
-    const int getNumSamples() { return numSamples; }
+    const int getNumLocalSamples() { return numLocalSamples; }
     const int getNumFeatures() { return numFeatures; }
     const vector<int>& getLocalDiscardedFeatureIndices() { return localDiscardedFeatureIndices; }
     
@@ -86,17 +76,15 @@ public:
     friend class AbstractDecisionTree;
     
 private:
-//    vector<vector<int> > bootstrappedTrainingSamples;
-    vector< vector<int> >& baseDataSet;
+    const vector< vector<int> >& baseDataSet;
     vector<int> bootstrappedTrainingSampleIndices;    
     vector<int> globalDiscardedFeatureIndices;
     vector<int> localDiscardedFeatureIndices;
-//    vector<vector<int> > bootstrappedFeatureVectors;
     vector<int> bootstrappedOutputVector;
     vector<int> featureSubsetIndices;
 
     int numFeatures;
-    int numSamples;
+    int numLocalSamples;
     int numOutputClasses;
     int generation;
     bool isLeaf;

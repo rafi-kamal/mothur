@@ -9,11 +9,11 @@
 #include "rftreenode.hpp"
 
 /***********************************************************************/
-RFTreeNode::RFTreeNode(vector< vector<int> >& baseDataSet,
+RFTreeNode::RFTreeNode(const vector< vector<int> >& baseDataSet,
                        vector<int> bootstrappedTrainingSampleIndices,
                        vector<int> globalDiscardedFeatureIndices,
                        int numFeatures,
-                       int numSamples,
+                       int numLocalSamples,
                        int numOutputClasses,
                        int generation,
                        int nodeId,
@@ -23,7 +23,7 @@ RFTreeNode::RFTreeNode(vector< vector<int> >& baseDataSet,
             bootstrappedTrainingSampleIndices(bootstrappedTrainingSampleIndices),
             globalDiscardedFeatureIndices(globalDiscardedFeatureIndices),
             numFeatures(numFeatures),
-            numSamples(numSamples),
+            numLocalSamples(numLocalSamples),
             numOutputClasses(numOutputClasses),
             generation(generation),
             isLeaf(false),
@@ -36,7 +36,7 @@ RFTreeNode::RFTreeNode(vector< vector<int> >& baseDataSet,
             ownEntropy(-1.0),
             featureStandardDeviationThreshold(featureStandardDeviationThreshold),
 //            bootstrappedFeatureVectors(numFeatures, vector<int>(numSamples, 0)),
-            bootstrappedOutputVector(numSamples, 0),
+            bootstrappedOutputVector(numLocalSamples, 0),
             leftChildNode(NULL),
             rightChildNode(NULL),
             parentNode(NULL) {
@@ -47,11 +47,10 @@ RFTreeNode::RFTreeNode(vector< vector<int> >& baseDataSet,
 //        if (m->control_pressed) { break; }
 //        for (int j = 0; j < numFeatures; j++) { bootstrappedFeatureVectors[j][i] = bootstrappedTrainingSamples[i][j]; }
 //    }
-    
+
+    // numSamples is the number of samplas locally in this node, not globally
     for (int i = 0; i < bootstrappedTrainingSampleIndices.size(); i++) { if (m->control_pressed) { break; }
-            // numSamples is the number of samplas locally in this node, not globally
         
-//        bootstrappedOutputVector[i] = bootstrappedTrainingSamples[i][numFeatures];
         bootstrappedOutputVector[i] = baseDataSet[bootstrappedTrainingSampleIndices[i]][numFeatures];
 
     }
@@ -71,7 +70,7 @@ void RFTreeNode::getBootstrappedFeatureVector(int i, vector<int>&  bootstrappedF
 int RFTreeNode::createLocalDiscardedFeatureList(){
     try {
         
-        vector<int> bootstrappedFeatureVector(numSamples, 0);
+        vector<int> bootstrappedFeatureVector(bootstrappedTrainingSampleIndices.size(), 0);
         
         for (int i = 0; i < numFeatures; i++) {
                 // TODO: need to check if bootstrappedFeatureVectors.size() == numFeatures, in python code we are using bootstrappedFeatureVectors instead of numFeatures

@@ -236,7 +236,7 @@ int DecisionTree::splitRecursively(RFTreeNode* rootNode) {
     try {
        
         int outputClass = -1;
-        if (rootNode->getNumSamples() < 2){
+        if (rootNode->getNumLocalSamples() < 2){
             rootNode->setIsLeaf(true);
             outputClass = rootNode->baseDataSet[bootstrappedTrainingSampleIndices[0]][rootNode->numFeatures];
             rootNode->setOutputClass(outputClass);
@@ -303,9 +303,9 @@ int DecisionTree::findAndUpdateBestFeatureToSplitOn(RFTreeNode* node){
 
 //        vector< vector<int> > bootstrappedFeatureVectors = node->getBootstrappedFeatureVectors();
         if (m->control_pressed) { return 0; }
-        vector<int> bootstrappedOutputVector = node->getBootstrappedOutputVector();
+        vector<int> bootstrappedOutputVector = node->bootstrappedOutputVector;
         if (m->control_pressed) { return 0; }
-        vector<int> featureSubsetIndices = node->getFeatureSubsetIndices();
+        vector<int> featureSubsetIndices = node->featureSubsetIndices;
         if (m->control_pressed) { return 0; }
         
         vector<double> featureSubsetEntropies;
@@ -313,7 +313,7 @@ int DecisionTree::findAndUpdateBestFeatureToSplitOn(RFTreeNode* node){
         vector<double> featureSubsetIntrinsicValues;
         vector<double> featureSubsetGainRatios;
         
-        int bootstrappedFeatureVectorLength = node->getBootstrappedTrainingSampleIndices().size();
+        int bootstrappedFeatureVectorLength = node->bootstrappedTrainingSampleIndices.size();
         vector<int> bootstrappedFeatureVector(bootstrappedFeatureVectorLength, 0);
         
         for (int i = 0; i < featureSubsetIndices.size(); i++) {
@@ -326,7 +326,7 @@ int DecisionTree::findAndUpdateBestFeatureToSplitOn(RFTreeNode* node){
             double featureIntrinsicValue;
             
                 // put new values int the bootstrappedFeatureVector
-            for (int j = 0; j < bootstrappedFeatureVectorLength; j++) {
+            for (int j = 0; j < node->bootstrappedTrainingSampleIndices.size(); j++) {
                 bootstrappedFeatureVector[j] = baseDataSet[j][tryIndex];
             }
             getMinEntropyOfFeature(bootstrappedFeatureVector, bootstrappedOutputVector, featureMinEntropy, featureSplitValue, featureIntrinsicValue);
@@ -438,7 +438,7 @@ int DecisionTree::printTree(RFTreeNode* treeNode, string caption){
             printTree(treeNode->getLeftChildNode(), "left ");
             printTree(treeNode->getRightChildNode(), "right");
         }else {
-            m->mothurOut(tabs + caption + " [ gen: " + toString(treeNode->getGeneration()) + " , id: " + toString(treeNode->nodeId) + " ] ( classified to: " + toString(treeNode->getOutputClass()) + ", samples: " + toString(treeNode->getNumSamples()) + " , misclassified: " + toString(treeNode->testSampleMisclassificationCount) + " )\n");
+            m->mothurOut(tabs + caption + " [ gen: " + toString(treeNode->getGeneration()) + " , id: " + toString(treeNode->nodeId) + " ] ( classified to: " + toString(treeNode->getOutputClass()) + ", samples: " + toString(treeNode->getNumLocalSamples()) + " , misclassified: " + toString(treeNode->testSampleMisclassificationCount) + " )\n");
         }
         return 0;
     }
