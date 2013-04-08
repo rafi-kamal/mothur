@@ -59,7 +59,7 @@ int AbstractDecisionTree::createBootStrappedSamples(){
             if (m->control_pressed) { return 0; }
             // TODO: optimize the rand() function call + double check if it's working properly
             int randomIndex = rand() % numSamples;
-            bootstrappedTrainingSamples.push_back(baseDataSet[randomIndex]);
+//            bootstrappedTrainingSamples.push_back(baseDataSet[randomIndex]);
             isInTrainingSamples[randomIndex] = true;
         }
         
@@ -67,24 +67,23 @@ int AbstractDecisionTree::createBootStrappedSamples(){
             if (m->control_pressed) { return 0; }
             if (isInTrainingSamples[i]){ bootstrappedTrainingSampleIndices.push_back(i); }
             else{
-                bootstrappedTestSamples.push_back(baseDataSet[i]);
+//                bootstrappedTestSamples.push_back(baseDataSet[i]);
                 bootstrappedTestSampleIndices.push_back(i);
             }
         }
         
             // do the transpose of Test Samples
-        for (int i = 0; i < bootstrappedTestSamples[0].size(); i++) {
-            if (m->control_pressed) { return 0; }
-            
-            vector<int> tmpFeatureVector(bootstrappedTestSamples.size(), 0);
-            for (int j = 0; j < bootstrappedTestSamples.size(); j++) {
-                if (m->control_pressed) { return 0; }
-                
-                tmpFeatureVector[j] = bootstrappedTestSamples[j][i];
-            }
-            testSampleFeatureVectors.push_back(tmpFeatureVector);
-        }
-        
+//        for (int i = 0; i < bootstrappedTestSamples[0].size(); i++) {
+//            if (m->control_pressed) { return 0; }
+//            
+//            vector<int> tmpFeatureVector(bootstrappedTestSamples.size(), 0);
+//            for (int j = 0; j < bootstrappedTestSamples.size(); j++) {
+//                if (m->control_pressed) { return 0; }
+//                
+//                tmpFeatureVector[j] = bootstrappedTestSamples[j][i];
+//            }
+//            testSampleFeatureVectors.push_back(tmpFeatureVector);
+//        }
         return 0;
     }
 	catch(exception& e) {
@@ -257,7 +256,7 @@ double AbstractDecisionTree::calcSplitEntropy(vector< pair<int, int> > featureOu
 
 /**************************************************************************************************/
 
-int AbstractDecisionTree::getSplitPopulation(RFTreeNode* node, vector< vector<int> >& leftChildSamples, vector< vector<int> >& rightChildSamples){    
+int AbstractDecisionTree::getSplitPopulation(RFTreeNode* node, vector<int>& leftChildSampleIndices, vector<int>& rightChildSampleIndices){
     try {
         // TODO: there is a possibility of optimization if we can recycle the samples in each nodes
         // we just need to pointers to the samples i.e. vector<int> and use it everywhere and not create the sample 
@@ -268,13 +267,17 @@ int AbstractDecisionTree::getSplitPopulation(RFTreeNode* node, vector< vector<in
         
         int splitFeatureGlobalIndex = node->getSplitFeatureIndex();
         
-        for (int i = 0; i < node->getBootstrappedTrainingSamples().size(); i++) {
+        for (int i = 0; i < node->bootstrappedTrainingSampleIndices.size(); i++) {
+
             if (m->control_pressed) { return 0; }
-            vector<int> sample =  node->getBootstrappedTrainingSamples()[i];
+            vector<int>& sample =  baseDataSet[node->bootstrappedTrainingSampleIndices[i]];
             if (m->control_pressed) { return 0; }
             
-            if (sample[splitFeatureGlobalIndex] < node->getSplitFeatureValue()) { leftChildSamples.push_back(sample); }
-            else { rightChildSamples.push_back(sample); }
+            if (sample[splitFeatureGlobalIndex] < node->getSplitFeatureValue()) {
+                leftChildSampleIndices.push_back(node->bootstrappedTrainingSampleIndices[i]);
+            } else {
+                rightChildSampleIndices.push_back(node->bootstrappedTrainingSampleIndices[i]);
+            }
         }
         
         return 0;
@@ -291,9 +294,11 @@ bool AbstractDecisionTree::checkIfAlreadyClassified(RFTreeNode* treeNode, int& o
     try {
 
         vector<int> tempOutputClasses;
-        for (int i = 0; i < treeNode->getBootstrappedTrainingSamples().size(); i++) {
+        for (int i = 0; i < treeNode->bootstrappedTrainingSampleIndices.size(); i++) {
             if (m->control_pressed) { return 0; }
-            int sampleOutputClass = treeNode->getBootstrappedTrainingSamples()[i][numFeatures];
+            
+            int sampleOutputClass = baseDataSet[treeNode->bootstrappedTrainingSampleIndices[i]][numSamples];
+            
             vector<int>::iterator it = find(tempOutputClasses.begin(), tempOutputClasses.end(), sampleOutputClass);
             if (it == tempOutputClasses.end()) {               // NOT FOUND
                 tempOutputClasses.push_back(sampleOutputClass);
@@ -311,3 +316,14 @@ bool AbstractDecisionTree::checkIfAlreadyClassified(RFTreeNode* treeNode, int& o
 }
 
 /**************************************************************************************************/
+
+void AbstractDecisionTree::getTestSampleFeatureVector(const int featureIndex, vector<int>& testSampleFeatureVector, int size) {
+        // do a size check and if necessary do a resize
+    if (testSampleFeatureVector.size() != size) {
+        testSampleFeatureVector.resize(size, 0);
+    }
+    
+    for (int j = 0; j < bootstrappedTestSampleIndices.size(); j++) {
+        testSampleFeatureVector[j] = baseDataSet[bootstrappedTestSampleIndices[j]][featureIndex];
+    }
+}

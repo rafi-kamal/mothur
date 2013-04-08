@@ -16,6 +16,18 @@ class RFTreeNode{
     
 public:
     
+        // new constructor
+    RFTreeNode(vector< vector<int> >& baseDataSet,
+               vector<int> bootstrappedTrainingSampleIndices,
+               vector<int> globalDiscardedFeatureIndices,
+               int numFeatures,
+               int numSamples,
+               int numOutputClasses,
+               int generation,
+               int nodeId,
+               float featureStandardDeviationThreshold = 0.0);
+
+    
     RFTreeNode(vector< vector<int> > bootstrappedTrainingSamples,
                vector<int> globalDiscardedFeatureIndices,
                int numFeatures,
@@ -32,7 +44,11 @@ public:
     // plus we do not modify the value as well
     const int getSplitFeatureIndex() { return splitFeatureIndex; }
     // TODO: check if this works properly or returs a shallow copy of the data
-    const vector< vector<int> >& getBootstrappedTrainingSamples() { return bootstrappedTrainingSamples; }
+//    const vector< vector<int> >& getBootstrappedTrainingSamples() { return bootstrappedTrainingSamples; }
+    
+    const vector<vector <int> >& getBaseDataSet() { return baseDataSet; }
+    const vector<int>& getBootstrappedTrainingSampleIndices() { return bootstrappedTrainingSampleIndices; }
+    
     const int getSplitFeatureValue() { return splitFeatureValue; }
     const int getGeneration() { return generation; }
     const bool checkIsLeaf() { return isLeaf; }
@@ -44,7 +60,10 @@ public:
     const int getNumSamples() { return numSamples; }
     const int getNumFeatures() { return numFeatures; }
     const vector<int>& getLocalDiscardedFeatureIndices() { return localDiscardedFeatureIndices; }
-    const vector< vector<int> >& getBootstrappedFeatureVectors() { return bootstrappedFeatureVectors; }
+    
+//    const vector< vector<int> >& getBootstrappedFeatureVectors() { return bootstrappedFeatureVectors; }
+    void getBootstrappedFeatureVector(int i, vector<int>&  bootstrappedFeatureVector);
+    
     const vector<int>& getBootstrappedOutputVector() { return bootstrappedOutputVector; }
     const vector<int>& getFeatureSubsetIndices() { return featureSubsetIndices; }
     const double getOwnEntropy() { return ownEntropy; }
@@ -67,10 +86,12 @@ public:
     friend class AbstractDecisionTree;
     
 private:
-    vector<vector<int> > bootstrappedTrainingSamples;
+//    vector<vector<int> > bootstrappedTrainingSamples;
+    vector< vector<int> >& baseDataSet;
+    vector<int> bootstrappedTrainingSampleIndices;    
     vector<int> globalDiscardedFeatureIndices;
     vector<int> localDiscardedFeatureIndices;
-    vector<vector<int> > bootstrappedFeatureVectors;
+//    vector<vector<int> > bootstrappedFeatureVectors;
     vector<int> bootstrappedOutputVector;
     vector<int> featureSubsetIndices;
 

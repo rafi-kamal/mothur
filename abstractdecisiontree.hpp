@@ -44,8 +44,10 @@ protected:
     virtual double calcIntrinsicValue(int numLessThanValueAtSplitPoint, int numGreaterThanValueAtSplitPoint, int numSamples);
     virtual double calcSplitEntropy(vector< pair<int, int> > featureOutputPairs, int splitIndex, int numOutputClasses, bool);
 
-    virtual int getSplitPopulation(RFTreeNode* node, vector< vector<int> >& leftChildSamples, vector< vector<int> >& rightChildSamples);
+    virtual int getSplitPopulation(RFTreeNode* node, vector<int>& leftChildSampleIndices, vector<int>& rightChildSampleIndices);
     virtual bool checkIfAlreadyClassified(RFTreeNode* treeNode, int& outputClass);
+    
+    virtual void getTestSampleFeatureVector(const int featureIndex, vector<int>& testSampleFeatureVector, int size);
 
     vector< vector<int> >& baseDataSet;
     int numSamples;
@@ -53,12 +55,12 @@ protected:
     int numOutputClasses;
     vector<int> outputClasses;
     
-    vector< vector<int> > bootstrappedTrainingSamples;
+//    vector< vector<int> > bootstrappedTrainingSamples;
     vector<int> bootstrappedTrainingSampleIndices;
-    vector< vector<int> > bootstrappedTestSamples;
+//    vector< vector<int> > bootstrappedTestSamples;
     vector<int> bootstrappedTestSampleIndices;
     
-    vector<vector<int> > testSampleFeatureVectors;
+//    vector<vector<int> > testSampleFeatureVectors;
     
     RFTreeNode* rootNode;
     int nodeIdCount;

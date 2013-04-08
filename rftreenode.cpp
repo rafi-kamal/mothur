@@ -9,7 +9,8 @@
 #include "rftreenode.hpp"
 
 /***********************************************************************/
-RFTreeNode::RFTreeNode(vector< vector<int> > bootstrappedTrainingSamples,
+RFTreeNode::RFTreeNode(vector< vector<int> >& baseDataSet,
+                       vector<int> bootstrappedTrainingSampleIndices,
                        vector<int> globalDiscardedFeatureIndices,
                        int numFeatures,
                        int numSamples,
@@ -18,7 +19,8 @@ RFTreeNode::RFTreeNode(vector< vector<int> > bootstrappedTrainingSamples,
                        int nodeId,
                        float featureStandardDeviationThreshold)
 
-            : bootstrappedTrainingSamples(bootstrappedTrainingSamples),
+            : baseDataSet(baseDataSet),
+            bootstrappedTrainingSampleIndices(bootstrappedTrainingSampleIndices),
             globalDiscardedFeatureIndices(globalDiscardedFeatureIndices),
             numFeatures(numFeatures),
             numSamples(numSamples),
@@ -33,35 +35,53 @@ RFTreeNode::RFTreeNode(vector< vector<int> > bootstrappedTrainingSamples,
             splitFeatureEntropy(-1.0),
             ownEntropy(-1.0),
             featureStandardDeviationThreshold(featureStandardDeviationThreshold),
-            bootstrappedFeatureVectors(numFeatures, vector<int>(numSamples, 0)),
+//            bootstrappedFeatureVectors(numFeatures, vector<int>(numSamples, 0)),
             bootstrappedOutputVector(numSamples, 0),
             leftChildNode(NULL),
             rightChildNode(NULL),
             parentNode(NULL) {
-                
+    
     m = MothurOut::getInstance();
     
-    for (int i = 0; i < numSamples; i++) {    // just doing a simple transpose of the matrix
-        if (m->control_pressed) { break; }
-        for (int j = 0; j < numFeatures; j++) { bootstrappedFeatureVectors[j][i] = bootstrappedTrainingSamples[i][j]; }
-    }
+//    for (int i = 0; i < numSamples; i++) {    // just doing a simple transpose of the matrix
+//        if (m->control_pressed) { break; }
+//        for (int j = 0; j < numFeatures; j++) { bootstrappedFeatureVectors[j][i] = bootstrappedTrainingSamples[i][j]; }
+//    }
     
-    for (int i = 0; i < numSamples; i++) { if (m->control_pressed) { break; }
-        bootstrappedOutputVector[i] = bootstrappedTrainingSamples[i][numFeatures]; }
+    for (int i = 0; i < bootstrappedTrainingSampleIndices.size(); i++) { if (m->control_pressed) { break; }
+            // numSamples is the number of samplas locally in this node, not globally
+        
+//        bootstrappedOutputVector[i] = bootstrappedTrainingSamples[i][numFeatures];
+        bootstrappedOutputVector[i] = baseDataSet[bootstrappedTrainingSampleIndices[i]][numFeatures];
+
+    }
     
     createLocalDiscardedFeatureList();
     updateNodeEntropy();
 }
+
+/***********************************************************************/
+void RFTreeNode::getBootstrappedFeatureVector(int i, vector<int>&  bootstrappedFeatureVector){
+    for (int j = 0; j < bootstrappedTrainingSampleIndices.size(); j++) {
+        bootstrappedFeatureVector[j] = baseDataSet[bootstrappedTrainingSampleIndices[j]][i];
+    }
+}
+
 /***********************************************************************/
 int RFTreeNode::createLocalDiscardedFeatureList(){
     try {
         
+        vector<int> bootstrappedFeatureVector(numSamples, 0);
+        
         for (int i = 0; i < numFeatures; i++) {
-                // TODO: need to check if bootstrappedFeatureVectors == numFeatures, in python code we are using bootstrappedFeatureVectors instead of numFeatures
-            if (m->control_pressed) { return 0; } 
+                // TODO: need to check if bootstrappedFeatureVectors.size() == numFeatures, in python code we are using bootstrappedFeatureVectors instead of numFeatures
+            if (m->control_pressed) { return 0; }
+            
             vector<int>::iterator it = find(globalDiscardedFeatureIndices.begin(), globalDiscardedFeatureIndices.end(), i);
+            
             if (it == globalDiscardedFeatureIndices.end()) {                           // NOT FOUND
-                double standardDeviation = m->getStandardDeviation(bootstrappedFeatureVectors[i]);  
+                getBootstrappedFeatureVector(i, bootstrappedFeatureVector);
+                double standardDeviation = m->getStandardDeviation(bootstrappedFeatureVector);  
                 if (standardDeviation <= featureStandardDeviationThreshold) { localDiscardedFeatureIndices.push_back(i); }
             }
         }
