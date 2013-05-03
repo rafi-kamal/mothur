@@ -171,7 +171,7 @@ double AbstractDecisionTree::calcIntrinsicValue(int numLessThanValueAtSplitPoint
 }
 /**************************************************************************************************/
 
-int AbstractDecisionTree::getBestSplitAndMinEntropy(vector< pair<int, int> > featureOutputPairs, vector<int> splitPoints,
+int AbstractDecisionTree::getBestSplitAndMinEntropy(const vector< pair<int, int> >& featureOutputPairs, vector<int> splitPoints,
                                                     double& minEntropy, int& minEntropyIndex, double& relatedIntrinsicValue){
     try {
         
@@ -219,7 +219,7 @@ int AbstractDecisionTree::getBestSplitAndMinEntropy(vector< pair<int, int> > fea
 }
 /**************************************************************************************************/
 
-double AbstractDecisionTree::calcSplitEntropy(vector< pair<int, int> > featureOutputPairs, int splitIndex, int numOutputClasses, bool isUpperSplit = true) {
+double AbstractDecisionTree::calcSplitEntropy(const vector< pair<int, int> >& featureOutputPairs, int splitIndex, int numOutputClasses, bool isUpperSplit = true) {
     try {
         vector<int> classCounts(numOutputClasses, 0);
         

@@ -40,9 +40,9 @@ protected:
   
     virtual int createBootStrappedSamples();
     virtual int getMinEntropyOfFeature(vector<int> featureVector, vector<int> outputVector, double& minEntropy, int& featureSplitValue, double& intrinsicValue);
-        virtual int getBestSplitAndMinEntropy(vector< pair<int, int> > featureOutputPairs, vector<int> splitPoints, double& minEntropy, int& minEntropyIndex, double& relatedIntrinsicValue);
+        virtual int getBestSplitAndMinEntropy(const vector< pair<int, int> >& featureOutputPairs, vector<int> splitPoints, double& minEntropy, int& minEntropyIndex, double& relatedIntrinsicValue);
     virtual double calcIntrinsicValue(int numLessThanValueAtSplitPoint, int numGreaterThanValueAtSplitPoint, int numSamples);
-    virtual double calcSplitEntropy(vector< pair<int, int> > featureOutputPairs, int splitIndex, int numOutputClasses, bool);
+    virtual double calcSplitEntropy(const vector< pair<int, int> >& featureOutputPairs, int splitIndex, int numOutputClasses, bool);
 
     virtual int getSplitPopulation(RFTreeNode* node, vector<int>& leftChildSampleIndices, vector<int>& rightChildSampleIndices);
     virtual bool checkIfAlreadyClassified(RFTreeNode* treeNode, int& outputClass);
