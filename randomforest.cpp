@@ -95,6 +95,10 @@ int RandomForest::calcForrestVariableImportance(string filename) {
         VariableRankDescendingSorterDouble variableRankDescendingSorter;
         sort(globalVariableRanks.begin(), globalVariableRanks.end(), variableRankDescendingSorter);
         
+        for (int i = 0; i < globalVariableRanks.size(); i++) {
+            cout << "[" << globalVariableRanks[i].first << ',' << globalVariableRanks[i].second << "], ";
+        }
+        
         ofstream out;
         m->openOutputFile(filename, out);
         out <<"OTU\tRank\n";
