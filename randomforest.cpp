@@ -10,7 +10,7 @@
 
 /***********************************************************************/
 
-RandomForest::RandomForest(const vector <vector<int> > dataSet,
+RandomForest::RandomForest(vector <vector<int> >& dataSet,
                            const int numDecisionTrees,
                            const string treeSplitCriterion = "gainratio",
                            const bool doPruning = false,
@@ -122,7 +122,7 @@ int RandomForest::populateDecisionTrees() {
         for (int i = 0; i < numDecisionTrees; i++) {
           
             if (m->control_pressed) { return 0; }
-            if (((i+1) % 100) == 0) {  m->mothurOut("Creating " + toString(i+1) + " (th) Decision tree\n");  }
+            if (((i+1) % 10) == 0) {  m->mothurOut("Creating " + toString(i+1) + " (th) Decision tree\n");  }
           
             // TODO: need to first fix if we are going to use pointer based system or anything else
             DecisionTree* decisionTree = new DecisionTree(dataSet, globalDiscardedFeatureIndices, OptimumFeatureSubsetSelector(optimumFeatureSubsetSelectionCriteria), treeSplitCriterion, featureStandardDeviationThreshold);

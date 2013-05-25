@@ -15,7 +15,7 @@
 class RegularizedRandomForest: public Forest {
 public:
     //
-    RegularizedRandomForest(const vector <vector<int> > dataSet,const int numDecisionTrees, const string);
+    RegularizedRandomForest(vector <vector<int> >& dataSet,const int numDecisionTrees, const string);
     
     int calcForrestErrorRate();
     int calcForrestVariableImportance(string);

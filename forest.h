@@ -20,7 +20,7 @@
 class Forest{
 public:
     // intialization with vectors
-    Forest(const std::vector < std::vector<int> > dataSet,
+    Forest(vector < vector<int> >& dataSet,
            const int numDecisionTrees,
            const string treeSplitCriterion,
            const bool doPruning,
@@ -56,7 +56,7 @@ protected:
     int numDecisionTrees;
     int numSamples;
     int numFeatures;
-    vector< vector<int> > dataSet;
+    vector< vector<int> >& dataSet;
     vector<int> globalDiscardedFeatureIndices;
     vector<double> globalVariableImportanceList;
     

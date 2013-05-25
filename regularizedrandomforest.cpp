@@ -8,7 +8,7 @@
 
 #include "regularizedrandomforest.h"
 
-RegularizedRandomForest::RegularizedRandomForest(const vector <vector<int> > dataSet,
+RegularizedRandomForest::RegularizedRandomForest(vector <vector<int> >& dataSet,
                                                  const int numDecisionTrees,
                                                  const string treeSplitCriterion = "gainratio")
                         // TODO: update ctor according to basic RandomForest Class
