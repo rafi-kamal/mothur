@@ -34,7 +34,7 @@ class DecisionTree: public AbstractDecisionTree{
 public:
     
     DecisionTree(vector< vector<int> >& baseDataSet,
-                 vector<int> globalDiscardedFeatureIndices,
+                 vector<int>& globalDiscardedFeatureIndices,
                  OptimumFeatureSubsetSelector optimumFeatureSubsetSelector,
                  string treeSplitCriterion,
                  float featureStandardDeviationThreshold);
@@ -64,7 +64,7 @@ private:
     void buildDecisionTree();
     int splitRecursively(RFTreeNode* rootNode);
     int findAndUpdateBestFeatureToSplitOn(RFTreeNode* node);
-    vector<int> selectFeatureSubsetRandomly(vector<int> globalDiscardedFeatureIndices, vector<int> localDiscardedFeatureIndices);
+    vector<int> selectFeatureSubsetRandomly(vector<int>& globalDiscardedFeatureIndices, vector<int> localDiscardedFeatureIndices);
     int printTree(RFTreeNode* treeNode, string caption);
     void deleteTreeNodesRecursively(RFTreeNode* treeNode);
     

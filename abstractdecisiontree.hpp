@@ -30,7 +30,7 @@ class AbstractDecisionTree{
 public:
   
     AbstractDecisionTree(vector<vector<int> >& baseDataSet,
-                           vector<int> globalDiscardedFeatureIndices, 
+                           vector<int>& globalDiscardedFeatureIndices,
                            OptimumFeatureSubsetSelector optimumFeatureSubsetSelector, 
                            string treeSplitCriterion);    
     virtual ~AbstractDecisionTree(){}
@@ -63,7 +63,7 @@ protected:
     RFTreeNode* rootNode;
     int nodeIdCount;
     map<int, int> nodeMisclassificationCounts;
-    vector<int> globalDiscardedFeatureIndices;
+    vector<int>& globalDiscardedFeatureIndices;
     int optimumFeatureSubsetSize;
     string treeSplitCriterion;
     MothurOut* m;

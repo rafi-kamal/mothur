@@ -9,7 +9,7 @@
 #include "decisiontree.hpp"
 
 DecisionTree::DecisionTree(vector< vector<int> >& baseDataSet,
-                           vector<int> globalDiscardedFeatureIndices,
+                           vector<int>& globalDiscardedFeatureIndices,
                            OptimumFeatureSubsetSelector optimumFeatureSubsetSelector,
                            string treeSplitCriterion,
                            float featureStandardDeviationThreshold)
@@ -368,7 +368,7 @@ int DecisionTree::findAndUpdateBestFeatureToSplitOn(RFTreeNode* node){
 	} 
 }
 /***********************************************************************/
-vector<int> DecisionTree::selectFeatureSubsetRandomly(vector<int> globalDiscardedFeatureIndices, vector<int> localDiscardedFeatureIndices){
+vector<int> DecisionTree::selectFeatureSubsetRandomly(vector<int>& globalDiscardedFeatureIndices, vector<int> localDiscardedFeatureIndices){
     try {
 
         vector<int> featureSubsetIndices;

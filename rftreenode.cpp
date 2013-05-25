@@ -10,7 +10,7 @@
 
 /***********************************************************************/
 RFTreeNode::RFTreeNode(vector< vector<int> > bootstrappedTrainingSamples,
-                       vector<int> globalDiscardedFeatureIndices,
+                       vector<int>& globalDiscardedFeatureIndices,
                        int numFeatures,
                        int numSamples,
                        int numOutputClasses,
