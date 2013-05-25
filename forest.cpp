@@ -33,27 +33,24 @@ Forest::Forest(vector < vector<int> >& dataSet,
         {
         
     m = MothurOut::getInstance();
-    globalDiscardedFeatureIndices = getGlobalDiscardedFeatureIndices();
+    calcGlobalDiscardedFeatureIndices();
 //    calculateFScore();
     // TODO: double check if the implemenatation of 'globalOutOfBagEstimates' is correct
 }
 
 /***********************************************************************/
 
-vector<int> Forest::getGlobalDiscardedFeatureIndices() {
-    try {
-        //vector<int> globalDiscardedFeatureIndices;
-        //globalDiscardedFeatureIndices.push_back(1);
-        
+void Forest::calcGlobalDiscardedFeatureIndices() {
+    try {        
         // calculate feature vectors
         vector< vector<int> > featureVectors(numFeatures, vector<int>(numSamples, 0) );
         for (int i = 0; i < numSamples; i++) {
-            if (m->control_pressed) { return globalDiscardedFeatureIndices; }
+            if (m->control_pressed) { return; }
             for (int j = 0; j < numFeatures; j++) { featureVectors[j][i] = dataSet[i][j]; }
         }
         
         for (int i = 0; i < featureVectors.size(); i++) {
-            if (m->control_pressed) { return globalDiscardedFeatureIndices; }
+            if (m->control_pressed) { return; }
             double standardDeviation = m->getStandardDeviation(featureVectors[i]);
             if (standardDeviation <= featureStandardDeviationThreshold){ globalDiscardedFeatureIndices.push_back(i); }
         }
@@ -61,12 +58,10 @@ vector<int> Forest::getGlobalDiscardedFeatureIndices() {
         if (m->debug) {
             m->mothurOut("number of global discarded features:  " + toString(globalDiscardedFeatureIndices.size())+ "\n");
             m->mothurOut("total features: " + toString(featureVectors.size())+ "\n");
-        }
-        
-        return globalDiscardedFeatureIndices;
+        }        
     }
 	catch(exception& e) {
-		m->errorOut(e, "Forest", "getGlobalDiscardedFeatureIndices");
+		m->errorOut(e, "Forest", "calcGlobalDiscardedFeatureIndices");
 		exit(1);
 	}
 }

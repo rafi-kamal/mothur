@@ -50,7 +50,7 @@ protected:
     // this would penalize a feature, even if in global space the feature looks quite good
     // the penalization would be averaged, so this woould unlikely to create a local optmina
     
-    vector<int> getGlobalDiscardedFeatureIndices();
+    void calcGlobalDiscardedFeatureIndices();
     void calculateFScore();
     
     int numDecisionTrees;
