@@ -193,11 +193,12 @@ void DecisionTree::randomlyShuffleAttribute(const vector< vector<int> >& samples
 
 int DecisionTree::purgeTreeNodesDataRecursively(RFTreeNode* treeNode) {
     try {
+        // TODO: need to remove this lines when we are passing references
         treeNode->bootstrappedTrainingSamples.clear();
         treeNode->bootstrappedFeatureVectors.clear();
         treeNode->bootstrappedOutputVector.clear();
         treeNode->localDiscardedFeatureIndices.clear();
-        treeNode->globalDiscardedFeatureIndices.clear();
+//        treeNode->globalDiscardedFeatureIndices.clear();
         
         if (treeNode->leftChildNode != NULL) { purgeTreeNodesDataRecursively(treeNode->leftChildNode); }
         if (treeNode->rightChildNode != NULL) { purgeTreeNodesDataRecursively(treeNode->rightChildNode); }
