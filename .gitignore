@@ -9,6 +9,10 @@ build
 xcuserdata
 mothur
 uchime
+makefile
+*.design
+*.shared
+*.summary
 callgrind*
 uchime_src/mk.*
 .project

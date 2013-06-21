@@ -67,7 +67,7 @@ public:
     friend class AbstractDecisionTree;
     
 private:
-    vector<vector<int> > bootstrappedTrainingSamples;
+    vector<vector<int> > &bootstrappedTrainingSamples;
     vector<int> globalDiscardedFeatureIndices;
     vector<int> localDiscardedFeatureIndices;
     vector<vector<int> > bootstrappedFeatureVectors;

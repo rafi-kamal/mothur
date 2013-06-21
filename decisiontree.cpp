@@ -193,7 +193,6 @@ void DecisionTree::randomlyShuffleAttribute(const vector< vector<int> >& samples
 
 int DecisionTree::purgeTreeNodesDataRecursively(RFTreeNode* treeNode) {
     try {
-        treeNode->bootstrappedTrainingSamples.clear();
         treeNode->bootstrappedFeatureVectors.clear();
         treeNode->bootstrappedOutputVector.clear();
         treeNode->localDiscardedFeatureIndices.clear();
