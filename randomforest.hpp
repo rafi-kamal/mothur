@@ -17,7 +17,7 @@ class RandomForest: public Forest {
     
 public:
     
-    RandomForest(const vector <vector<int> > dataSet,
+    RandomForest(const vector <vector<int> >& dataSet,
                  const int numDecisionTrees,
                  const string treeSplitCriterion,
                  const bool doPruning,

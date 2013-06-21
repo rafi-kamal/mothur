@@ -9,7 +9,6 @@ build
 xcuserdata
 mothur
 uchime
-makefile
 *.design
 *.shared
 *.summary

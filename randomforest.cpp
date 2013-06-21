@@ -10,7 +10,7 @@
 
 /***********************************************************************/
 
-RandomForest::RandomForest(const vector <vector<int> > dataSet,
+RandomForest::RandomForest(const vector <vector<int> >& dataSet,
                            const int numDecisionTrees,
                            const string treeSplitCriterion = "gainratio",
                            const bool doPruning = false,

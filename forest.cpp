@@ -9,7 +9,7 @@
 #include "forest.h"
 
 /***********************************************************************/
-Forest::Forest(const std::vector < std::vector<int> > dataSet,
+Forest::Forest(const std::vector < std::vector<int> >& dataSet,
                const int numDecisionTrees,
                const string treeSplitCriterion = "gainratio",
                const bool doPruning = false,

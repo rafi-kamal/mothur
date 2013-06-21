@@ -11,7 +11,7 @@
 /**************************************************************************************************/
 
 AbstractDecisionTree::AbstractDecisionTree(vector<vector<int> >& baseDataSet,
-                                         vector<int> globalDiscardedFeatureIndices,
+                                         vector<int>& globalDiscardedFeatureIndices,
                                          OptimumFeatureSubsetSelector optimumFeatureSubsetSelector, 
                                          string treeSplitCriterion)
 
