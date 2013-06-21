@@ -144,6 +144,8 @@
 #include "getmetacommunitycommand.h"
 #include "sparcccommand.h"
 #include "makelookupcommand.h"
+#include "renameseqscommand.h"
+#include "makelefsecommand.h"
 
 /*******************************************************/
 
@@ -311,6 +313,8 @@ CommandFactory::CommandFactory(){
     commands["get.metacommunity"]   = "get.metacommunity";
     commands["sparcc"]              = "sparcc";
     commands["make.lookup"]         = "make.lookup";
+    commands["rename.seqs"]         = "rename.seqs";
+    commands["make.lefse"]          = "make.lefse";
     
 
 }
@@ -534,6 +538,8 @@ Command* CommandFactory::getCommand(string commandName, string optionString){
         else if(commandName == "get.metacommunity")     {	command = new GetMetaCommunityCommand(optionString);        }
         else if(commandName == "sparcc")                {	command = new SparccCommand(optionString);                  }
         else if(commandName == "make.lookup")			{	command = new MakeLookupCommand(optionString);				}
+        else if(commandName == "rename.seqs")			{	command = new RenameSeqsCommand(optionString);				}
+        else if(commandName == "make.lefse")			{	command = new MakeLefseCommand(optionString);				}
 		else											{	command = new NoCommand(optionString);						}
 
 		return command;
@@ -698,6 +704,8 @@ Command* CommandFactory::getCommand(string commandName, string optionString, str
         else if(commandName == "get.metacommunity")     {	pipecommand = new GetMetaCommunityCommand(optionString);        }
         else if(commandName == "sparcc")                {	pipecommand = new SparccCommand(optionString);                  }
         else if(commandName == "make.lookup")			{	pipecommand = new MakeLookupCommand(optionString);				}
+        else if(commandName == "rename.seqs")			{	pipecommand = new RenameSeqsCommand(optionString);				}
+        else if(commandName == "make.lefse")			{	pipecommand = new MakeLefseCommand(optionString);				}
 		else											{	pipecommand = new NoCommand(optionString);						}
 
 		return pipecommand;
@@ -848,6 +856,8 @@ Command* CommandFactory::getCommand(string commandName){
         else if(commandName == "get.metacommunity")     {	shellcommand = new GetMetaCommunityCommand();       }
         else if(commandName == "sparcc")                {	shellcommand = new SparccCommand();                 }
         else if(commandName == "make.lookup")			{	shellcommand = new MakeLookupCommand();				}
+        else if(commandName == "rename.seqs")			{	shellcommand = new RenameSeqsCommand();				}
+        else if(commandName == "make.lefse")			{	shellcommand = new MakeLefseCommand();				}
 		else											{	shellcommand = new NoCommand();						}
 
 		return shellcommand;
