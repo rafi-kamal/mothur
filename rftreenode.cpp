@@ -9,7 +9,7 @@
 #include "rftreenode.hpp"
 
 /***********************************************************************/
-RFTreeNode::RFTreeNode(vector< vector<int> > bootstrappedTrainingSamples,
+RFTreeNode::RFTreeNode(vector< vector<int> >& bootstrappedTrainingSamples,
                        vector<int> globalDiscardedFeatureIndices,
                        int numFeatures,
                        int numSamples,

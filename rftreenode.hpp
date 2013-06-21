@@ -16,7 +16,7 @@ class RFTreeNode{
     
 public:
     
-    RFTreeNode(vector< vector<int> > bootstrappedTrainingSamples,
+    RFTreeNode(vector< vector<int> >& bootstrappedTrainingSamples,
                vector<int> globalDiscardedFeatureIndices,
                int numFeatures,
                int numSamples,

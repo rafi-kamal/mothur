@@ -7,3 +7,9 @@
 .idea
 build
 xcuserdata
+mothur
+uchime
+callgrind*
+uchime_src/mk.*
+.project
+.cproject
